@@ -3,34 +3,41 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Terms — Custom Lasts</title>
-  <meta name="description" content="Terms of use for Custom Lasts." />
-  <meta property="og:title" content="Custom Lasts" />
-  <meta property="og:description" content="Your last. Forged from your foot." />
+  <title>Vault — Custom Lasts</title>
+  <meta name="description" content="Foot scans stored only in this browser. Nothing is uploaded." />
+  <meta property="og:title" content="Vault — Custom Lasts" />
+  <meta property="og:description" content="Local scans on this device." />
   <meta property="og:image" content="public/og.jpg" />
   <meta name="theme-color" content="#F4EFE6" />
   <link rel="icon" href="public/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="public/apple-touch-icon.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="vault-page">
 <header class="site wrap">
   <a class="brand" href="index.html"><img src="public/logo.png" alt="Custom Lasts mark" /><span>Custom Lasts</span></a>
   <nav class="site">
     <a href="index.html">Studio</a>
     <a href="scan.html">Scan</a>
-    <a href="history.html">Vault</a>
+    <a href="history.html" aria-current="page">Vault</a>
     <a href="makers.html">Makers</a>
     <a href="privacy.html">Privacy</a>
     <a href="support.html">Support</a>
   </nav>
 </header>
 
-<main class="wrap block prose">
-  <p class="kicker">Terms</p>
-  <h1>Terms</h1>
-  <p>This site is an introduction to Custom Lasts, not the iPhone app. Waitlist mail is a request to be notified, not a purchase. Maker pricing on this site is a working range, not a contract.</p>
-  <p>The app, when it ships, will have its own terms. Until then: don’t scrape biometric data from our pages, and don’t present our sample lasts as a scan of a real person. Questions: tyler@customlasts.app.</p>
+<main class="wrap block vault-shell">
+  <p class="kicker">Local vault</p>
+  <h1>On this browser only.</h1>
+  <p class="lede">Scans live in IndexedDB on this device. They are not sent to Custom Lasts, makers, or anyone else. Clearing this site's data in your browser deletes them.</p>
+  <div class="vault-toolbar">
+    <a class="btn primary" href="scan.html">New scan</a>
+    <button class="btn ghost" type="button" id="btn-delete-all" hidden>Delete all</button>
+  </div>
+  <p class="vault-empty" id="vault-empty" hidden>
+    No scans on this device yet. <a href="scan.html">Scan your foot</a> — photos stay here.
+  </p>
+  <ul class="vault-list" id="vault-list"></ul>
 </main>
 
 <footer class="site wrap">
@@ -42,5 +49,6 @@
     <a href="mailto:tyler@customlasts.app">tyler@customlasts.app</a>
   </div>
 </footer>
+<script src="vault.js"></script>
 </body>
 </html>

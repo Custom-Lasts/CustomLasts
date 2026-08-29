@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scan your foot — Custom Lasts</title>
+  <meta name="description" content="Guided phone-camera photos of your foot, stored only in this browser. Not the iPhone ARKit app." />
+  <meta property="og:title" content="Scan your foot — Custom Lasts" />
+  <meta property="og:description" content="Phone camera in the browser. Photos stay on this device." />
+  <meta property="og:image" content="public/og.jpg" />
+  <meta name="theme-color" content="#F4EFE6" />
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="public/apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="scan-page">
+<header class="site wrap">
+  <a class="brand" href="index.html"><img src="public/logo.png" alt="Custom Lasts mark" /><span>Custom Lasts</span></a>
+  <nav class="site">
+    <a href="index.html">Studio</a>
+    <a href="scan.html" aria-current="page">Scan</a>
+    <a href="history.html">Vault</a>
+    <a href="makers.html">Makers</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="support.html">Support</a>
+  </nav>
+</header>
+
+<main class="wrap scan-shell" id="scan-app">
+  <p class="kicker">Browser prototype</p>
+  <p class="note phone-note">Works best on a phone. Desktop webcam is a fallback.</p>
+  <ol class="scan-progress" aria-label="Scan steps">
+    <li data-mark="0">Consent</li>
+    <li data-mark="1">Foot</li>
+    <li data-mark="2">Capture</li>
+    <li data-mark="3">Review</li>
+    <li data-mark="4">Saved</li>
+  </ol>
+
+  <section class="scan-panel is-active" data-step="0" aria-labelledby="consent-title">
+    <h1 id="consent-title">Your foot is biometric data.</h1>
+    <p class="lede">A short, honest scan. Phone camera in this browser — not ARKit, not the iPhone app.</p>
+    <ul class="consent-list">
+      <li>Photos stay on this phone and this browser. They never leave the device in this prototype.</li>
+      <li>Nothing is sent to Custom Lasts or to makers unless you later opt in. This prototype never uploads.</li>
+      <li>You can delete a scan, or the whole vault, from the vault page on this same browser.</li>
+      <li>This is a guided-photo prototype. It is not the iPhone ARKit app and it does not build a last yet.</li>
+    </ul>
+    <div class="check-stack">
+      <label>
+        <input type="checkbox" id="consent-bio" />
+        <span>I understand this is biometric data.</span>
+      </label>
+      <label>
+        <input type="checkbox" id="consent-local" />
+        <span>I agree my photos stay on this device only.</span>
+      </label>
+    </div>
+    <div class="actions">
+      <button class="btn primary" type="button" id="consent-continue" disabled>Continue</button>
+      <a class="btn ghost" href="history.html">Open vault</a>
+    </div>
+  </section>
+
+  <section class="scan-panel" data-step="1" hidden aria-labelledby="foot-title">
+    <h1 id="foot-title">Which foot?</h1>
+    <p class="lede">Scan one foot at a time. You can come back for the other.</p>
+    <div class="foot-pick">
+      <button class="foot-card" type="button" data-side="left">
+        <span class="kicker">01</span>
+        <strong>Left</strong>
+        <span>Your left foot</span>
+      </button>
+      <button class="foot-card" type="button" data-side="right">
+        <span class="kicker">02</span>
+        <strong>Right</strong>
+        <span>Your right foot</span>
+      </button>
+    </div>
+    <p class="note"><a href="#" id="back-to-consent">Back to consent</a></p>
+  </section>
+
+  <section class="scan-panel" data-step="2" hidden aria-labelledby="capture-title">
+    <p class="kicker" id="shot-kicker">Shot 1 of 4</p>
+    <h1 id="capture-title">Top</h1>
+    <p class="lede" id="shot-hint"></p>
+    <div class="viewfinder" id="viewfinder">
+      <video id="camera" autoplay muted playsinline webkit-playsinline></video>
+      <img id="freeze" alt="Captured frame" hidden />
+      <div class="viewfinder-frame" aria-hidden="true"></div>
+      <p class="viewfinder-caption" id="viewfinder-caption"></p>
+    </div>
+    <div class="camera-error" id="camera-error" hidden role="alert">
+      <p>Camera is blocked or unavailable. On iPhone use Safari, tap Allow, and open this page over https. You can still pick a photo from this device — it stays local.</p>
+      <label class="btn ghost file-btn" for="file-fallback">Choose a photo</label>
+    </div>
+    <div class="shot-dots" id="shot-dots" aria-hidden="true"></div>
+    <div class="actions capture-actions">
+      <button class="btn shutter" type="button" id="btn-capture">Capture</button>
+      <button class="btn ghost" type="button" id="btn-retake" hidden>Retake</button>
+      <button class="btn primary" type="button" id="btn-next-shot" hidden>Next shot</button>
+    </div>
+    <input class="sr-file" type="file" id="file-fallback" accept="image/*" capture="environment" />
+    <p class="note" id="file-alt-wrap">
+      <label class="text-btn" for="file-fallback">Choose a photo instead</label>
+    </p>
+  </section>
+
+  <section class="scan-panel" data-step="3" hidden aria-labelledby="review-title">
+    <h1 id="review-title">Review</h1>
+    <p class="lede" id="review-lede">Four frames, still on this device. Save them to the vault or discard them.</p>
+    <ul class="review-grid" id="review-grid"></ul>
+    <div class="actions">
+      <button class="btn primary" type="button" id="btn-save">Save to vault</button>
+      <button class="btn ghost" type="button" id="btn-discard">Discard</button>
+    </div>
+    <p class="note" id="save-error" hidden role="alert"></p>
+  </section>
+
+  <section class="scan-panel" data-step="4" hidden aria-labelledby="done-title">
+    <h1 id="done-title">On this device only.</h1>
+    <p class="lede">The scan is in your browser vault. Custom Lasts never received it. This prototype does not upload.</p>
+    <div class="actions">
+      <a class="btn primary" href="history.html">Open vault</a>
+      <button class="btn ghost" type="button" id="btn-another">Scan the other foot</button>
+    </div>
+  </section>
+</main>
+
+<footer class="site wrap">
+  <div>Custom Lasts · customlasts.app</div>
+  <div>
+    <a href="privacy.html">Privacy</a> ·
+    <a href="terms.html">Terms</a> ·
+    <a href="support.html">Support</a> ·
+    <a href="mailto:tyler@customlasts.app">tyler@customlasts.app</a>
+  </div>
+</footer>
+<script src="vault.js"></script>
+<script src="scan.js"></script>
+</body>
+</html>
